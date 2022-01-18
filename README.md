@@ -21,7 +21,7 @@ A virtual machine host with the following packages:
   3. Create the virtual machine
     
          virt-install --name ric                                           \
-             --cloud-init user-data=cloud-init/ric-xenial.yml              \
+             --cloud-init user-data=cloud-init/ric-xenial.yml,disable=on   \
              --memory=12288 --vcpus 4                                      \
              --disk path=<image> --import                                  \
              --os-variant detect=on                                        \

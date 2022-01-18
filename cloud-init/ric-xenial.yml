@@ -145,6 +145,7 @@ runcmd:
   - cd /tmp/linux-amd64 && mv helm /usr/local/bin/helm
   - git clone http://gerrit.o-ran-sc.org/r/it/dep /ric 
   - cd /ric && git submodule update --init --recursive --remote
+  - touch /etc/cloud/cloud-init.disabled
 
 power_state:
   mode: reboot
