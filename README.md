@@ -1,4 +1,4 @@
-# Ran Intelligent Controller
+# RAN Intelligent Controller
 
 ## Deploying a RIC virtual machine with [cloud-init](https://cloud-init.io/)
 
