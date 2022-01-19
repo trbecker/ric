@@ -48,14 +48,16 @@ A virtual machine host with the following packages ([reference documentation](ht
   3. Create the virtual machine
     
          virt-install --name ric                                           \
-             --cloud-init user-data=cloud-init/ric-xenial.yml,disable=on   \
+             --cloud-init user-data=cloud-init/bionic/ric.yml,disable=on   \
              --memory=6144 --vcpus 2                                       \
              --disk path=<image> --import                                  \
-             --os-variant detect=on                                        \
+             --os-variant detect=ubuntu18.04                               \
              --network network=ricnet                                      \
              --graphics vnc,listen=0.0.0.0
 
   4. The machine will be ready to create the [kubernetes](https://kubernetes.io/) cluster. The RIC [dep](https://gerrit.o-ran-sc.org/r/admin/repos/it/dep) repository will be installed in `/ric`.
 
-## Future Steps
-  * Create the kubernetes cluster.
+## Issues
+  * Currently, cloud init is not setting the correct IP address for each machine.
+  * The cloud-init files reboot after running the RIC setup
+  * The default kernel neds to be set manually for bionic
