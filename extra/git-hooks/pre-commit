@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function compare_files {
+    if [[ $(diff -EZb $1 $2 | grep '^[><]' | wc -l) -ne 6 ]] ; then
+        echo commit denied: $1 and $2 have unexpected differences
+        echo please check the differences with diff -uNr $1 $2
+        echo and commit after fixing those errors
+        echo the expected differences are hostname and network address
+        exit 1
+    fi
+}
+
+compare_files cloud-init/bionic/ric.yml cloud-init/bionic/aux.yml
