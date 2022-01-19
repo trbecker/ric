@@ -1,0 +1,44 @@
+---
+- hosts: all
+  connection: local
+  tasks:
+    - name: install packages
+      package:
+        name: '{{ item }}'
+        state: 'latest'
+      with_items:
+        - libvirt
+        - virt-install
+        - cloud-utils
+        - libguestfs-tools-c
+        - libvirt-client
+        - python3-pip
+
+    - name: create ric network
+      community.libvirt.virt_net:
+        name: ricnet
+        state: active
+        autostart: yes
+        xml: |
+             <network>
+               <name>ricnet</name>
+               <forward mode='nat'/>
+               <bridge name='ricbr' stp='on' delay='0'/>
+               <mac address='52:54:00:10:86:a4'/>
+               <ip address='192.168.123.1' netmask='255.255.255.0'>
+                 <dhcp>
+                   <range start='192.168.123.2' end='192.168.123.99'/>
+                 </dhcp>
+               </ip>
+             </network>
+
+    - name: setup port forwarding
+      ansible.posix.firewalld:
+        permanent: yes
+        state: enabled
+        immediate: yes
+        port_forward:
+          - port: 22222
+            proto: 'tcp'
+            toaddr: '192.168.123.100'
+            toport: '22'
