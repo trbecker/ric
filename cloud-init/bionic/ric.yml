@@ -21,13 +21,6 @@ chpasswd:
 # network configuration
 hostname: ric
 fqdn: ric.lan
-ethernets:
-  ens3:
-    dhcp4: false
-    addresses: [ 192.168.123.100/24 ]
-    gateway4: 192.168.123.1
-    nameservers: 
-      addresses: [ 8.8.8.8 ]
 
 # disks
 growpart:
@@ -125,6 +118,19 @@ write_files:
              nf_conntrack_ipv4
              nf_conntrack_ipv6
              nf_conntrack_proto_sctp
+  - owner: root:root
+    mode: 644
+    path: /etc/netplan/01-enp3s0.yaml
+    content: |
+             network:
+                     version: 2
+                     ethernets:
+                             enp1s0:
+                                     dhcp4: no
+                                     addresses: [ 192.168.123.100/24 ]
+                                     gateway4: 192.168.123.1
+                                     nameservers:
+                                             addresses: [ 8.8.8.8, 8.8.4.4 ]
 
 # run commands
 runcmd:

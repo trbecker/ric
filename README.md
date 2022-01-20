@@ -44,18 +44,22 @@ A virtual machine host with the following packages ([reference documentation](ht
   2. Resize the image.
     
          qemu-img resize <image> 20G
+	 
+  3. Create the image
     
-  3. Create the virtual machine
+         qemu-img create -f qcow2 -F qcow2 -b <image> ric.qcow2 20G
+    
+  4. Create the virtual machine
     
          virt-install --name ric                                           \
              --cloud-init user-data=cloud-init/bionic/ric.yml,disable=on   \
              --memory=6144 --vcpus 2                                       \
-             --disk path=<image> --import                                  \
+             --disk path=ric.qcow2 --import                                \
              --os-variant detect=ubuntu18.04                               \
              --network network=ricnet                                      \
              --graphics vnc,listen=0.0.0.0
 
-  4. The machine will be ready to create the [kubernetes](https://kubernetes.io/) cluster. The RIC [dep](https://gerrit.o-ran-sc.org/r/admin/repos/it/dep) repository will be installed in `/ric`.
+  5. The machine will be ready to create the [kubernetes](https://kubernetes.io/) cluster. The RIC [dep](https://gerrit.o-ran-sc.org/r/admin/repos/it/dep) repository will be installed in `/ric`.
 
 ## Issues
   * Currently, cloud init is not setting the correct IP address for each machine.
