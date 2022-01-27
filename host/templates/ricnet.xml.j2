@@ -1,0 +1,11 @@
+<network>
+  <name>{{ ric_network.name }}</name>
+  <forward mode='nat'/>
+  <bridge name='{{ric_network.bridge_name }}' stp='on' delay='0'/>
+  <mac address='{{ ric_network.mac_address }}'/>
+  <ip address='{{ ric_network.ip_address }}' netmask='{{ ric_network.netmask }}'>
+    <dhcp>
+      <range start='{{ ric_network.dhcp_range.start }}' end='{{ ric_network.dhcp_range.end }}'/>
+    </dhcp>
+  </ip>
+</network>

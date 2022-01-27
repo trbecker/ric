@@ -3,6 +3,8 @@
 ## Deploying a RIC virtual machine with [cloud-init](https://cloud-init.io/)
 
 ### Pre-reqs
+**Note**: Fedora can be auto configured by following the instructions in [host/README.md](host/README.md).
+
 A virtual machine host with the following packages ([reference documentation](https://docs.o-ran-sc.org/projects/o-ran-sc-it-dep/en/latest/installation-guides.html#virtualbox-vms-as-installation-hosts)):
   * Operationg system and packages
     * [Fedora](https://getfedora.org/)
@@ -13,7 +15,7 @@ A virtual machine host with the following packages ([reference documentation](ht
 
     * [Ubuntu](https://ubuntu.com/) (TBD)
 
-  * The network `ricnet` defined as documented in the reference (Ansible provisions it).
+  * The network `ricnet` defined as documented in the reference.
 
         <network>
           <name>ricnet</name>

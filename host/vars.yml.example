@@ -1,0 +1,19 @@
+---
+hostname: 'virthost'
+
+ric_network:
+  name: 'ricnet'
+  bridge_name: 'ricbr'
+  mac_address: '52:54:00:10:86:a4'
+  ip_address: '192.168.123.1'
+  netmask: '255.255.255.0'
+  dhcp_range:
+    start: '192.168.123.2'
+    end: '192.168.123.99'
+
+# This will set the the lid closing to be ignored
+# If the host is a mobile computer that will sit unattended, set this to true.
+unattended_notebook: false
+
+ric_storage_pool_directory: '/pool'
+ric_ubuntu_image_url: 'https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img'

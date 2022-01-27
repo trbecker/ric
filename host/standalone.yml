@@ -1,7 +1,35 @@
 ---
+# Configure lid closing for unattended notebooks
+#   # grep -ve ' ^$' -e '^#' /etc/systemd/logind.conf 
+#
+# [Login]
+# HandleLidSwitch=ignore
+# HandleLidSwitchExternalPower=ignore
+# HandleLidSwitchDocked=ignore
+#
 - hosts: all
   connection: local
   tasks:
+    - include_vars: vars.yml
+
+    - name: configure hostname
+      hostname:
+        name: '{{ hostname }}'
+
+    - name: configure unattended notebooks
+      block:
+        - name: configure power options
+          template:
+            src: 'templates/logind.conf.j2'
+            dest: '/etc/systemd/logind.conf'
+  
+        - name: restart logind
+          systemd:
+            name: systemd-logind
+            state: restarted
+            daemon_reload: true
+      when: unattended_notebook is defined and unattended_notebook
+
     - name: install packages
       package:
         name: '{{ item }}'
@@ -14,31 +42,55 @@
         - libvirt-client
         - python3-pip
 
+    - name: install python lxml
+      pip:
+        name: lxml
+        state: present
+
+    - name: start and enable libvirt
+      systemd:
+        name: libvirtd
+        state: started
+        enabled: true
+
     - name: create ric network
       community.libvirt.virt_net:
-        name: ricnet
-        state: active
-        autostart: yes
-        xml: |
-             <network>
-               <name>ricnet</name>
-               <forward mode='nat'/>
-               <bridge name='ricbr' stp='on' delay='0'/>
-               <mac address='52:54:00:10:86:a4'/>
-               <ip address='192.168.123.1' netmask='255.255.255.0'>
-                 <dhcp>
-                   <range start='192.168.123.2' end='192.168.123.99'/>
-                 </dhcp>
-               </ip>
-             </network>
+        name: '{{ ric_network.name }}'
+        command: define
+        xml: '{{ lookup("template", "templates/ricnet.xml.j2") }}'
 
-    - name: setup port forwarding
-      ansible.posix.firewalld:
-        permanent: yes
-        state: enabled
-        immediate: yes
-        port_forward:
-          - port: 22222
-            proto: 'tcp'
-            toaddr: '192.168.123.100'
-            toport: '22'
+    - name: start ricnet
+      community.libvirt.virt_net:
+        name: '{{ ric_network.name }}'
+        state: active
+
+    - name: autostart ricnet
+      community.libvirt.virt_net:
+        name: '{{ ric_network.name }}'
+        autostart: true
+
+    - name: create the images directory
+      file:
+        path: '{{ ric_storage_pool_directory }}'
+        state: directory
+
+    - name: download the current bionic image
+      get_url:
+        url: '{{ ric_ubuntu_image_url }}'
+        dest: '{{ ric_storage_pool_directory }}/bionic.qcow2'
+       
+
+#    - name: setup port forwarding
+#      ansible.posix.firewalld:
+#        permanent: yes
+#        state: enabled
+#        immediate: yes
+#        port_forward:
+#          - port: 22222
+#            proto: 'tcp'
+#            toaddr: '192.168.123.100'
+#            toport: '22'
+#          - port: 22223
+#            proto: 'tcp'
+#            toaddr: '192.168.123.101'
+#            toport: '22'
