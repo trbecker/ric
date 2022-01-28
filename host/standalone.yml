@@ -78,6 +78,16 @@
       get_url:
         url: '{{ ric_ubuntu_image_url }}'
         dest: '{{ ric_storage_pool_directory }}/bionic.qcow2'
+
+    - name: add ric and aux to the host file
+      lineinfile:
+        path: /etc/hosts
+        line: '{{ item.ip_address }} {{ item.hostname }}'
+      with_items:
+        - hostname: ric
+          ip_address: 192.168.123.100
+        - hostname: aux
+          ip_address: 192.168.123.101
        
 
 #    - name: setup port forwarding
