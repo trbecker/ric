@@ -42,7 +42,7 @@ A virtual machine host with the following packages ([reference documentation](ht
 
 ### Installing
 
-  1. Obtain a `qcow2` image at [Ubuntu cloud images](https://cloud-images.ubuntu.com/). The recommended version is Ubuntu 18.04 (Bionic Beaver).
+  1. Obtain a `qcow2` image at [Ubuntu cloud images](https://cloud-images.ubuntu.com/). The recommended version is Ubuntu 18.04 (Bionic Beaver). Some ubuntu images don't use `.qcow2` as the termination, e.g. `bionic-server-cloudimg-amd64.img`.
   2. Resize the image.
     
          qemu-img resize <image> 20G
