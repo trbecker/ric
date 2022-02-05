@@ -105,6 +105,7 @@ packages:
   - wget
   - git
   - linux-image-4.15.0-45-lowlatency
+  - python3-pip
 
 write_files:
   - owner: root:root
@@ -135,10 +136,9 @@ write_files:
 # run commands
 runcmd:
   - touch /etc/cloud/cloud-init.disabled
-  - apt remove linux-image-$(uname -r)
-  - update-grub
-  - apt autoremove
-  - git clone http://gerrit.o-ran-sc.org/r/it/dep /ric 
+  - git clone "https://gerrit.o-ran-sc.org/r/ric-plt/appmgr" /appmgr
+  - pip3 install /appmgr/xapp_orchestrater/dev/xapp_onboarder
+  - git clone http://gerrit.o-ran-sc.org/r/it/dep /ric
   - cd /ric && git submodule update --init --recursive --remote
   - cd /ric/tools/k8s/bin/ && ./gen-cloud-init.sh && ./k8s-1node-cloud-init-k_1_16-h_2_17-d_cur.sh
 # k8s-1node...sh will reboot the system

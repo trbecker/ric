@@ -63,6 +63,11 @@ A virtual machine host with the following packages ([reference documentation](ht
 
   5. The machine will be ready to create the [kubernetes](https://kubernetes.io/) cluster. The RIC [dep](https://gerrit.o-ran-sc.org/r/admin/repos/it/dep) repository will be installed in `/ric`.
 
+
+## Post install
+### Install the infrastructure for xApps
+  1. Follow the steps in [RIC applications](https://docs.o-ran-sc.org/projects/o-ran-sc-it-dep/en/latest/installation-guides.html#ric-applications)
+
 ## Issues
   * Currently, cloud init is not setting the correct IP address for each machine.
   * The cloud-init files reboot after running the RIC setup
