@@ -43,30 +43,16 @@ A virtual machine host with the following packages ([reference documentation](ht
 ### Installing
 
   1. Obtain a `qcow2` image at [Ubuntu cloud images](https://cloud-images.ubuntu.com/). The recommended version is Ubuntu 18.04 (Bionic Beaver). Some ubuntu images don't use `.qcow2` as the termination, e.g. `bionic-server-cloudimg-amd64.img`.
-  2. Resize the image.
-    
-         qemu-img resize <image> 20G
-	 
-  3. Create the image
-    
-         qemu-img create -f qcow2 -F qcow2 -b <image> ric.qcow2 20G
-    
-  4. Create the virtual machine
-    
-         virt-install --name ric                                           \
-             --cloud-init user-data=cloud-init/bionic/ric.yml,disable=on   \
-             --memory=6144 --vcpus 2                                       \
-             --disk path=ric.qcow2 --import                                \
-             --os-variant detect=ubuntu18.04                               \
-             --network network=ricnet                                      \
-             --graphics vnc,listen=0.0.0.0
 
-  5. The machine will be ready to create the [kubernetes](https://kubernetes.io/) cluster. The RIC [dep](https://gerrit.o-ran-sc.org/r/admin/repos/it/dep) repository will be installed in `/ric`.
-
+  2. To quickly install the virtual machine, the operator can use the command below. Otheriwse the same script can be used to create the virtual machine.
+     ~~~
+     extra/bin/install-vm.sh bionic ric
+     ~~~
+     
 
 ## Post install
 ### Install the infrastructure for xApps
-  1. Follow the steps in [RIC applications](https://docs.o-ran-sc.org/projects/o-ran-sc-it-dep/en/latest/installation-guides.html#ric-applications)
+  1. Follow the steps in [RIC installation guide](https://docs.o-ran-sc.org/projects/o-ran-sc-it-dep/en/latest/installation-guides.html)
 
 ## Issues
   * Currently, cloud init is not setting the correct IP address for each machine.
