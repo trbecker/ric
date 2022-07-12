@@ -1,5 +1,7 @@
 # RAN Intelligent Controller
 
+This information is valid for commit `aed39eed3108410e207827c54b103581e45ae3ed` from `https://gerrit.o-ran-sc.org/r/it/dep`.
+
 ## Deploying a RIC virtual machine with [cloud-init](https://cloud-init.io/)
 
 ### Pre-reqs
